@@ -61,7 +61,6 @@ class SearchProblem:
         """
         util.raiseNotDefined()
 
-
 def tinyMazeSearch(problem):
     """
     Returns a sequence of moves that solves tinyMaze.  For any other maze, the
@@ -70,7 +69,33 @@ def tinyMazeSearch(problem):
     from game import Directions
     s = Directions.SOUTH
     w = Directions.WEST
-    return  [s, s, w, s, w, w, s, w]
+    return [s, s, w, s, w, w, s, w]
+
+
+def graphSearch(problem, fringe):
+    """
+    Search through the successors of a problem to find a goal. The argument fringe should be an empty queue.
+    """
+
+    start_state = problem.getStartState()
+    fringe.push(start_state)
+    visited = list
+    try:
+        start_state.__hash__()
+        visited.set()
+    except:
+        visited.set()
+
+    while not fringe.isEmpty():
+        current_state = fringe.pop()
+
+        if SearchProblem.isGoalState(current_state):
+            return current_state # find a way to get the path
+        else:
+            for child in problem.getSuccessors(current_state):
+                fringe.push(child)
+
+
 
 def depthFirstSearch(problem):
     """
@@ -89,7 +114,13 @@ def depthFirstSearch(problem):
 
     startState = problem.getStartState
 
-    # fringe =
+    fringe = util.Stack
+    fringe.push(problem.getStartState)
+    currentState = fringe.pop()
+    # goalState
+
+
+
 
 
 
