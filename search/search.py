@@ -110,7 +110,7 @@ def graphSearch(problem, fringe):
     """
 
     start_state = problem.getStartState()
-    fringe.push(start_state)
+    fringe.push(Node(start_state))
     visited = list
     try:
         start_state.__hash__()
@@ -119,12 +119,12 @@ def graphSearch(problem, fringe):
         visited.set()
 
     while not fringe.isEmpty():
-        current_state = fringe.pop()
+        current_node = fringe.pop()
 
-        if SearchProblem.isGoalState(current_state):
-            return current_state # find a way to get the path
+        if SearchProblem.isGoalState(problem, current_node.state):
+            return current_node.nodePath()  # find a way to get the path
         else:
-            for child in problem.getSuccessors(current_state):
+            for child in problem.getSuccessors(current_node.state):
                 fringe.push(child)
 
 
