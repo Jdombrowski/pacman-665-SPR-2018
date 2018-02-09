@@ -86,7 +86,7 @@ class Node:
             self.depth = 0
 
     def __repr__(self):
-        return "<Node %s>" % self.state
+        return "<Node %s>" % (self.state,)
 
     def nodePath(self):
         x, result = self, [self]
@@ -119,15 +119,18 @@ def graphSearch(problem, fringe):
 
     while not fringe.isEmpty():
         current_node = fringe.pop()
-        visited.add(current_node)
+        visited.add(current_node.state)
 
         if problem.isGoalState(current_node.state):
-            return [node.action for node in current_node.nodePath()]  # find a way to get the path
+            test = [node.action for node in current_node.nodePath()][1:]
+            return [node.action for node in current_node.nodePath()][1:]
         else:
-            if not visited.__contains__(current_node):
-                fringe.push(current_node.expand())
+            for node in current_node.expand(problem):
+                if node.state not in visited:
+                    fringe.push(node)
 
-    return [0]
+
+    return None
 
 
 
@@ -144,11 +147,8 @@ def depthFirstSearch(problem):
     print "Start:", problem.getStartState()
     print "Is the start a goal?", problem.isGoalState(problem.getStartState())
     print "Start's successors:", problem.getSuccessors(problem.getStartState())
-    # TODO
 
-    fringe = util.Stack()
-    graphSearch(problem, fringe)
-
+    return graphSearch(problem, util.Stack())
 
 
 
@@ -158,13 +158,11 @@ def depthFirstSearch(problem):
 
 def breadthFirstSearch(problem):
     """Search the shallowest nodes in the search tree first."""
-    "*** YOUR CODE HERE ***"
-    util.raiseNotDefined()
+    return graphSearch(problem, util.Queue())
 
 def uniformCostSearch(problem):
     """Search the node of least total cost first."""
     "*** YOUR CODE HERE ***"
-    util.raiseNotDefined()
 
 def nullHeuristic(state, problem=None):
     """
