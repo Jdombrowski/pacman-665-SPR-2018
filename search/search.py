@@ -97,8 +97,8 @@ class Node:
         return result
 
     def expand(self, problem):
-        return [Node(nextNode, self, act, cost)
-                for (nextNode, act, cost) in problem.getSuccessors(self.state)]
+        return [Node(next, self, act, cost)
+                for (next, act, cost) in problem.getSuccessors(self.state)]
 
 
 
@@ -120,7 +120,7 @@ def graphSearch(problem, fringe):
     while not fringe.isEmpty():
         current_node = fringe.pop()
 
-        if current_node not in visited:
+        if current_node.state not in visited:
             visited.add(current_node.state)
 
             if problem.isGoalState(current_node.state):
