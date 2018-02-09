@@ -74,13 +74,13 @@ def tinyMazeSearch(problem):
 
 # Node class comes from Professor Yoon's slide 16 from Lec3_Search
 class Node:
-    def __init__(self, state, parent=None, action=None, path_cost = 0):
+    def __init__(self, state, parent=None, action=None, path_cost=0):
         self.state = state
         self.parent = parent
         self.action = action
         if parent:
             self.path_cost = parent.path_cost + path_cost
-            self.depth = parent.depth
+            self.depth = parent.depth + 1
         else:
             self.path_cost = path_cost
             self.depth = 0
@@ -110,7 +110,7 @@ def graphSearch(problem, fringe):
     Search through the successors of a problem to find a goal. The argument fringe should be an empty queue.
     """
     start_state = problem.getStartState()
-    fringe.push(Node(problem.getStartState()))
+    fringe.push(Node(start_state))
     try:
         start_state.__hash__()
         visited = set()
@@ -119,17 +119,16 @@ def graphSearch(problem, fringe):
 
     while not fringe.isEmpty():
         current_node = fringe.pop()
-        visited.add(current_node.state)
 
-        if problem.isGoalState(current_node.state):
-            test = [node.action for node in current_node.nodePath()][1:]
-            return [node.action for node in current_node.nodePath()][1:]
-        else:
-            for node in current_node.expand(problem):
-                if node.state not in visited:
-                    fringe.push(node)
+        if current_node not in visited:
+            visited.add(current_node.state)
 
-
+            if problem.isGoalState(current_node.state):
+                return [node.action for node in current_node.nodePath()][1:]
+            else:
+                for node in current_node.expand(problem):
+                    if node.state not in visited:
+                        fringe.push(node)
     return None
 
 
@@ -149,11 +148,6 @@ def depthFirstSearch(problem):
     print "Start's successors:", problem.getSuccessors(problem.getStartState())
 
     return graphSearch(problem, util.Stack())
-
-
-
-
-
 
 
 def breadthFirstSearch(problem):
