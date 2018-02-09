@@ -28,6 +28,7 @@ class SearchProblem:
     """
 
     def getStartState(self):
+        # type: () -> object
         """
         Returns the start state for the search problem.
         """
@@ -108,24 +109,25 @@ def graphSearch(problem, fringe):
     """
     Search through the successors of a problem to find a goal. The argument fringe should be an empty queue.
     """
-
     start_state = problem.getStartState()
-    fringe.push(Node(start_state))
-    visited = list
+    fringe.push(Node(problem.getStartState()))
     try:
         start_state.__hash__()
-        visited.set()
+        visited = set()
     except:
-        visited.set()
+        visited = list()
 
     while not fringe.isEmpty():
         current_node = fringe.pop()
+        visited.add(current_node)
 
-        if SearchProblem.isGoalState(problem, current_node.state):
-            return current_node.nodePath()  # find a way to get the path
+        if problem.isGoalState(current_node.state):
+            return [node.action for node in current_node.nodePath()]  # find a way to get the path
         else:
-            for child in problem.getSuccessors(current_node.state):
-                fringe.push(child)
+            if not visited.__contains__(current_node):
+                fringe.push(current_node.expand())
+
+    return [0]
 
 
 
@@ -144,12 +146,8 @@ def depthFirstSearch(problem):
     print "Start's successors:", problem.getSuccessors(problem.getStartState())
     # TODO
 
-    startState = problem.getStartState
-
-    fringe = util.Stack
-    fringe.push(problem.getStartState)
-    currentState = fringe.pop()
-    # goalState
+    fringe = util.Stack()
+    graphSearch(problem, fringe)
 
 
 

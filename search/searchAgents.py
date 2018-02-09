@@ -165,6 +165,7 @@ class PositionSearchProblem(search.SearchProblem):
         self._visited, self._visitedlist, self._expanded = {}, [], 0 # DO NOT CHANGE
 
     def getStartState(self):
+        # type: () -> object
         return self.startState
 
     def isGoalState(self, state):
@@ -290,6 +291,7 @@ class CornersProblem(search.SearchProblem):
         "*** YOUR CODE HERE ***"
 
     def getStartState(self):
+        # type: () -> object
         """
         Returns the start state (in your state space, not the full Pacman state
         space)
@@ -385,6 +387,7 @@ class FoodSearchProblem:
         self.heuristicInfo = {} # A dictionary for the heuristic to store information
 
     def getStartState(self):
+        # type: () -> object
         return self.start
 
     def isGoalState(self, state):
