@@ -31,7 +31,7 @@ class SearchProblem:
         """
         Returns the start state for the search problem.
         """
-        util.raiseNotDefined()
+        return self.getStartState()
 
     def isGoalState(self, state):
         """
@@ -39,7 +39,7 @@ class SearchProblem:
 
         Returns True if and only if the state is a valid goal state.
         """
-        util.raiseNotDefined()
+        return self.isGoalState(state)
 
     def getSuccessors(self, state):
         """
@@ -50,7 +50,7 @@ class SearchProblem:
         state, 'action' is the action required to get there, and 'stepCost' is
         the incremental cost of expanding to that successor.
         """
-        util.raiseNotDefined()
+        return self.getSuccessors(state)
 
     def getCostOfActions(self, actions):
         """
@@ -59,7 +59,7 @@ class SearchProblem:
         This method returns the total cost of a particular sequence of actions.
         The sequence must be composed of legal moves.
         """
-        util.raiseNotDefined()
+        return self.getCostOfActions(actions)
 
 
 def tinyMazeSearch(problem):
