@@ -71,6 +71,7 @@ def tinyMazeSearch(problem):
     w = Directions.WEST
     return [s, s, w, s, w, w, s, w]
 
+# Node class comes from Professor Yoon's slide 16 from Lec3_Search
 class Node:
     def __init__(self, state, parent=None, action=None, path_cost = 0):
         self.state = state
