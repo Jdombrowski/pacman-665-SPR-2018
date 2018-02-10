@@ -204,7 +204,7 @@ class PriorityQueue:
                 heapq.heapify(self.heap)
                 break
         else:
-            self.push(item, priority)
+            self.push(item)
 
 class PriorityQueueWithFunction(PriorityQueue):
     """

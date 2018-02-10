@@ -88,12 +88,15 @@ class Node:
     def __repr__(self):
         return "<Node %s>" % (self.state,)
 
+
+
     def nodePath(self):
         x, result = self, [self]
         while x.parent:
             result.append(x.parent)
             x = x.parent
         result.reverse()
+        # print "This is the final path :", result
         return result
 
     def expand(self, problem):
@@ -110,6 +113,7 @@ def graphSearch(problem, fringe):
     Search through the successors of a problem to find a goal. The argument fringe should be an empty queue.
     """
     start_state = problem.getStartState()
+    problem.expanded_states = []
     fringe.push(Node(start_state))
     try:
         start_state.__hash__()
@@ -126,6 +130,7 @@ def graphSearch(problem, fringe):
             if problem.isGoalState(current_node.state):
                 return [node.action for node in current_node.nodePath()][1:]
             else:
+                # debug this is where the second expansion of A happens
                 for node in current_node.expand(problem):
                     if node.state not in visited:
                         fringe.push(node)
@@ -156,7 +161,8 @@ def breadthFirstSearch(problem):
 
 def uniformCostSearch(problem):
     """Search the node of least total cost first."""
-    "*** YOUR CODE HERE ***"
+    return graphSearch(problem, util.PriorityQueueWithFunction(lambda x: 1))
+
 
 def nullHeuristic(state, problem=None):
     """
@@ -168,7 +174,7 @@ def nullHeuristic(state, problem=None):
 def aStarSearch(problem, heuristic=nullHeuristic):
     """Search the node that has the lowest combined cost and heuristic first."""
     "*** YOUR CODE HERE ***"
-    util.raiseNotDefined()
+    return graphSearch(problem, util.PriorityQueueWithFunction(lambda x: util.manhattanDistance(problem.goal, problem.startState)))
 
 
 # Abbreviations
