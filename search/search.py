@@ -180,7 +180,6 @@ def costFn(x, goal):
 def aStarSearch(problem, heuristic=nullHeuristic):
     """Search the node that has the lowest combined cost and heuristic first."""
     "*** YOUR CODE HERE ***"
-    goal = problem.goal
     return graphSearch(problem, util.PriorityQueueWithFunction(lambda x: costFn(x, problem.goal)))
 
 
