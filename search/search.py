@@ -28,7 +28,6 @@ class SearchProblem:
     """
 
     def getStartState(self):
-        # type: () -> object
         """
         Returns the start state for the search problem.
         """
@@ -159,9 +158,10 @@ def breadthFirstSearch(problem):
     """Search the shallowest nodes in the search tree first."""
     return graphSearch(problem, util.Queue())
 
+
 def uniformCostSearch(problem):
     """Search the node of least total cost first."""
-    return graphSearch(problem, util.PriorityQueueWithFunction(lambda x: 1))
+    return graphSearch(problem, util.PriorityQueueWithFunction(lambda x: x.path_cost))
 
 
 def nullHeuristic(state, problem=None):
@@ -171,10 +171,17 @@ def nullHeuristic(state, problem=None):
     """
     return 0
 
+
+# debug testing the lambda function of the a*
+def costFn(x, goal):
+    distance = util.manhattanDistance(x.state, goal)
+    return distance
+
 def aStarSearch(problem, heuristic=nullHeuristic):
     """Search the node that has the lowest combined cost and heuristic first."""
     "*** YOUR CODE HERE ***"
-    return graphSearch(problem, util.PriorityQueueWithFunction(lambda x: util.manhattanDistance(problem.goal, problem.startState)))
+    goal = problem.goal
+    return graphSearch(problem, util.PriorityQueueWithFunction(lambda x: costFn(x, problem.goal)))
 
 
 # Abbreviations
