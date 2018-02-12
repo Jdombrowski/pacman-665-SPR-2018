@@ -147,9 +147,9 @@ def depthFirstSearch(problem):
     To get started, you might want to try some of these simple commands to
     understand the search problem that is being passed in:
     """
-    print "Start:", problem.getStartState()
-    print "Is the start a goal?", problem.isGoalState(problem.getStartState())
-    print "Start's successors:", problem.getSuccessors(problem.getStartState())
+    # print "Start:", problem.getStartState()
+    # print "Is the start a goal?", problem.isGoalState(problem.getStartState())
+    # print "Start's successors:", problem.getSuccessors(problem.getStartState())
 
     return graphSearch(problem, util.Stack())
 
@@ -171,6 +171,8 @@ def nullHeuristic(state, problem=None):
     """
     return 0
 
+
+# pass chars as ints
 
 # debug testing the lambda function of the a*
 def costFn(x, goal):
