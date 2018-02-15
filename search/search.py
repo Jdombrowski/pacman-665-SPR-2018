@@ -79,6 +79,7 @@ class Node:
         self.action = action
         if parent:
             self.path_cost = parent.path_cost + path_cost
+            # + nullHeuristic(state, problem=None)
             self.depth = parent.depth + 1
         else:
             self.path_cost = path_cost
@@ -147,9 +148,6 @@ def depthFirstSearch(problem):
     To get started, you might want to try some of these simple commands to
     understand the search problem that is being passed in:
     """
-    # print "Start:", problem.getStartState()
-    # print "Is the start a goal?", problem.isGoalState(problem.getStartState())
-    # print "Start's successors:", problem.getSuccessors(problem.getStartState())
 
     return graphSearch(problem, util.Stack())
 
@@ -172,17 +170,9 @@ def nullHeuristic(state, problem=None):
     return 0
 
 
-# pass chars as ints
-
-# debug testing the lambda function of the a*
-def costFn(x, goal):
-    distance = util.manhattanDistance(x.state, goal)
-    return distance
-
 def aStarSearch(problem, heuristic=nullHeuristic):
     """Search the node that has the lowest combined cost and heuristic first."""
-    "*** YOUR CODE HERE ***"
-    return graphSearch(problem, util.PriorityQueueWithFunction(lambda x: costFn(x, problem.goal)))
+    return graphSearch(problem, util.PriorityQueueWithFunction(lambda x: x.path_cost + heuristic(x.state, problem)))
 
 
 # Abbreviations
