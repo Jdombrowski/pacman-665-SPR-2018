@@ -130,7 +130,6 @@ def graphSearch(problem, fringe):
             if problem.isGoalState(current_node.state):
                 return [node.action for node in current_node.nodePath()][1:]
             else:
-                # debug this is where the second expansion of A happens
                 for node in current_node.expand(problem):
                     if node.state not in visited:
                         fringe.push(node)

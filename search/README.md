@@ -40,11 +40,23 @@ However, to run the autograder from CLI : `python search.autograder.py`
 
 ### Implementation
    
-1. DFS - 
+1. DFS
     
-    Implemented a stack and utilized 
+    Implemented a stack to traverse the deepest node first
 
 2. BFS
-3. UCS 
+	
+	Implemented a queue traverse all children before going deeper in the tree 
+	
+3. UCS
+	
+	Implemented a priority queue to track and minimize the total path cost. The function utilized is simply the cost of the current_nodes' path. 
+	 
 4. A-star 
 
+	Implemented a priority queue to track and minimize the total path cost. The function utilized is simply the cost of the current_nodes' path with an added heuristic that tracks the distance to the goal. So each step of the traversal will minimize the distance to the goal 
+	
+	
+### Conclusion 
+
+The general search problem was the most difficult portion because it involved debugging through the node structure and dealing with the fringe itself. Once that portion was completed, the rest of the search methods were straightforward. In the following questions, I am looking forward to working with other problem types and working with different heuristics. 
