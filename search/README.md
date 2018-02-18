@@ -59,4 +59,5 @@ However, to run the autograder from CLI : `python search.autograder.py`
 	
 ### Conclusion 
 
-The general search problem was the most difficult portion because it involved debugging through the node structure and dealing with the fringe itself. Once that portion was completed, the rest of the search methods were straightforward. In the following questions, I am looking forward to working with other problem types and working with different heuristics. 
+The general search problem was the most difficult portion because it involved debugging through the node structure and dealing with the fringe itself. Once that portion was completed, the rest of the search methods were straightforward. In the following questions, I am looking forward to working with other problem types and working with different heuristics.
+added garbage for testing slack API 
