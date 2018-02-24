@@ -201,7 +201,7 @@ class PositionSearchProblem(search.SearchProblem):
             if not self.walls[nextx][nexty]:
                 nextState = (nextx, nexty)
                 cost = self.costFn(nextState)
-                successors.append( ( nextState, action, cost) )
+                successors.append((nextState, action, cost))
 
         # Bookkeeping for display purposes
         self._expanded += 1 # DO NOT CHANGE
@@ -289,15 +289,9 @@ class CornersProblem(search.SearchProblem):
         # Please add any code here which you would like to use
         # in initializing the problem
         "*** YOUR CODE HERE ***"
-        self.next_closest_goal = None
         self.costFn = lambda x: 1
-
-        # store map of goals
-
-        self.goals = {}
-        for x in self.corners:
-            self.goals[x] = False
-
+        self.visited_corners = []
+        self.startingState = (self.startingPosition, self.visited_corners)
 
 
 
@@ -307,14 +301,78 @@ class CornersProblem(search.SearchProblem):
         Returns the start state (in your state space, not the full Pacman state
         space)
         """
-        return self.startingPosition
+        return self.startingState
 
     def isGoalState(self, state):
         """
         Returns whether this search state is a goal state of the problem.
         """
-        "*** YOUR CODE HERE ***"
-        return state in self.goals
+        visited_corners = state[1]
+        current_position = state[0]
+        # if current_position in visited_corners:
+        return len(visited_corners) == 4
+        # else:
+        #     return False
+
+    # def getSuccessors(self, state):
+    #     """
+    #     Returns successor states, the actions they require, and a cost of 1.
+    #
+    #      As noted in search.py:
+    #         For a given state, this should return a list of triples, (successor,
+    #         action, stepCost), where 'successor' is a successor to the current
+    #         state, 'action' is the action required to get there, and 'stepCost'
+    #         is the incremental cost of expanding to that successor
+    #     """
+    #
+    #     successors = []
+    #     # for action in [Directions.NORTH, Directions.SOUTH, Directions.EAST, Directions.WEST]:
+    #     # Add a successor state to the successor list if the action is legal
+    #     # Here's a code snippet for figuring out whether a new position hits a wall:
+    #     #   x,y = currentPosition
+    #     #   dx, dy = Actions.directionToVector(action)
+    #     #   nextx, nexty = int(x + dx), int(y + dy)
+    #     #   hitsWall = self.walls[nextx][nexty]
+    #     "*** YOUR CODE HERE ***"
+    #
+    #     for action in [Directions.NORTH, Directions.SOUTH, Directions.EAST, Directions.WEST]:
+    #         x, y = state[0]
+    #         # print state[1]
+    #
+    #         untyped_list = state[1]
+    #         # print type(successor_visited_corners), "first"
+    #         hard_typed_list = list(state[1])
+    #         # print type(successor_visited_corners), "second"
+    #
+    #         # print successor_visited_corners
+    #         dx, dy = Actions.directionToVector(action)
+    #         nextx, nexty = int(x + dx), int(y + dy)
+    #
+    #         if not self.walls[nextx][nexty]:
+    #             next_position = (nextx, nexty)
+    #             cost = self.costFn(next_position)
+    #
+    #             if next_position in self.corners:
+    #                 if next_position not in hard_typed_list:
+    #                     hard_typed_list.append(next_position)
+    #                     untyped_list.append(next_position)
+    #
+    #             next_state = (next_position, hard_typed_list)
+    #             successors.append((next_state, action, cost))
+    #         # else:
+    #             # next_position= (0,0)
+    #
+    #         print "\n", "current position", state[0]
+    #         # print "next position", next_position
+    #         print type(hard_typed_list) ,"typed"
+    #         print hard_typed_list
+    #         print type(untyped_list), "not typecast"
+    #         print untyped_list
+    #
+    #     self._expanded += 1  # DO NOT CHANGE
+    #
+    #     return successors
+
 
     def getSuccessors(self, state):
         """
@@ -329,25 +387,40 @@ class CornersProblem(search.SearchProblem):
 
         successors = []
         # for action in [Directions.NORTH, Directions.SOUTH, Directions.EAST, Directions.WEST]:
-            # Add a successor state to the successor list if the action is legal
-            # Here's a code snippet for figuring out whether a new position hits a wall:
-            #   x,y = currentPosition
-            #   dx, dy = Actions.directionToVector(action)
-            #   nextx, nexty = int(x + dx), int(y + dy)
-            #   hitsWall = self.walls[nextx][nexty]
+        # Add a successor state to the successor list if the action is legal
+        # Here's a code snippet for figuring out whether a new position hits a wall:
+        #   x,y = currentPosition
+        #   dx, dy = Actions.directionToVector(action)
+        #   nextx, nexty = int(x + dx), int(y + dy)
+        #   hitsWall = self.walls[nextx][nexty]
         "*** YOUR CODE HERE ***"
+
         for action in [Directions.NORTH, Directions.SOUTH, Directions.EAST, Directions.WEST]:
-            x, y = state
+            x, y = state[0]
+            # print state[1]
+
+            successor_visited_corners = list(state[1])
+
+            # print successor_visited_corners
             dx, dy = Actions.directionToVector(action)
             nextx, nexty = int(x + dx), int(y + dy)
+
             if not self.walls[nextx][nexty]:
-                nextState = (nextx, nexty)
-                cost = self.costFn(nextState)
-                successors.append((nextState, action, cost))
+                next_position = (nextx, nexty)
+                cost = self.costFn(next_position)
 
+                if next_position in self.corners:
+                    if next_position not in successor_visited_corners:
+                        successor_visited_corners.append(next_position)
 
+                next_state = (next_position, successor_visited_corners)
+                successors.append((next_state, action, cost))
+                # print next_state
 
-        self._expanded += 1 # DO NOT CHANGE
+            # print type(successor_visited_corners) ,"after"
+
+        self._expanded += 1  # DO NOT CHANGE
+
         return successors
 
     def getCostOfActions(self, actions):
@@ -392,8 +465,8 @@ def cornersHeuristic(state, problem):
             if closest_goal_distance > current_distance:
                 closest_goal_distance = current_distance
                 # closest_goal_state = current_goal
-
-    return closest_goal_distance
+    return 0
+    # return closest_goal_distance
 
 class AStarCornersAgent(SearchAgent):
     "A SearchAgent for FoodSearchProblem using A* and your foodHeuristic"
