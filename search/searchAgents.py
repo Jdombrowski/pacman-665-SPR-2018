@@ -33,6 +33,7 @@ description for details.
 
 Good luck and happy searching!
 """
+import math
 
 from game import Directions
 from game import Agent
@@ -290,7 +291,8 @@ class CornersProblem(search.SearchProblem):
         # in initializing the problem
         "*** YOUR CODE HERE ***"
         self.costFn = lambda x: 1
-        self.visited_corners = []
+        self.visited_corners = list()
+        # self.visited_corners = []
         self.startingState = (self.startingPosition, self.visited_corners)
 
 
@@ -307,12 +309,8 @@ class CornersProblem(search.SearchProblem):
         """
         Returns whether this search state is a goal state of the problem.
         """
-        visited_corners = state[1]
-        current_position = state[0]
-        # if current_position in visited_corners:
-        return len(visited_corners) == 4
-        # else:
-        #     return False
+        return len(state[1]) == 4
+
 
     # def getSuccessors(self, state):
     #     """
@@ -399,7 +397,10 @@ class CornersProblem(search.SearchProblem):
             x, y = state[0]
             # print state[1]
 
+            # this is the most convoluted fix.
             successor_visited_corners = list(state[1])
+            # successor_visited_corners = state[1]
+            # print type(successor_visited_corners)
 
             # print successor_visited_corners
             dx, dy = Actions.directionToVector(action)
@@ -454,19 +455,22 @@ def cornersHeuristic(state, problem):
     walls = problem.walls  # These are the walls of the maze, as a Grid (game.py)
 
     "*** YOUR CODE HERE ***"
-    closest_goal_distance = 9999999
-    closest_goal_state = None
+    
+    current_euclidean_distance = 99999999
+# manhattan
+    for corner in corners:
+        testing_distance = ((corner[0]-state[0][0])**2 + (corner[1]-state[0][1]) ** 2)
+        current_euclidean_distance = min(current_euclidean_distance, testing_distance)
 
-    for current_goal in problem.goals:
-        # if not visited
-        if not problem.goals[state]:
-            current_distance = manhattanHeuristic(current_goal, state)
-            problem.goals[current_goal] = True
-            if closest_goal_distance > current_distance:
-                closest_goal_distance = current_distance
-                # closest_goal_state = current_goal
-    return 0
-    # return closest_goal_distance
+    # testing_distance = 0
+    # current_visited_corner_distance = 0
+    # for visited_corners in state[1]:
+    #     testing_distance = ((visited_corners[0] - state[0][0]) ** 2 + (visited_corners[1] - state[0][1]) ** 2)
+    #     current_visited_corner_distance = max(testing_distance, testing_distance)
+
+    total_distance = current_euclidean_distance
+    return total_distance
+
 
 class AStarCornersAgent(SearchAgent):
     "A SearchAgent for FoodSearchProblem using A* and your foodHeuristic"
