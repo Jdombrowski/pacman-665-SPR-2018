@@ -312,66 +312,6 @@ class CornersProblem(search.SearchProblem):
         return len(state[1]) == 4
 
 
-    # def getSuccessors(self, state):
-    #     """
-    #     Returns successor states, the actions they require, and a cost of 1.
-    #
-    #      As noted in search.py:
-    #         For a given state, this should return a list of triples, (successor,
-    #         action, stepCost), where 'successor' is a successor to the current
-    #         state, 'action' is the action required to get there, and 'stepCost'
-    #         is the incremental cost of expanding to that successor
-    #     """
-    #
-    #     successors = []
-    #     # for action in [Directions.NORTH, Directions.SOUTH, Directions.EAST, Directions.WEST]:
-    #     # Add a successor state to the successor list if the action is legal
-    #     # Here's a code snippet for figuring out whether a new position hits a wall:
-    #     #   x,y = currentPosition
-    #     #   dx, dy = Actions.directionToVector(action)
-    #     #   nextx, nexty = int(x + dx), int(y + dy)
-    #     #   hitsWall = self.walls[nextx][nexty]
-    #     "*** YOUR CODE HERE ***"
-    #
-    #     for action in [Directions.NORTH, Directions.SOUTH, Directions.EAST, Directions.WEST]:
-    #         x, y = state[0]
-    #         # print state[1]
-    #
-    #         untyped_list = state[1]
-    #         # print type(successor_visited_corners), "first"
-    #         hard_typed_list = list(state[1])
-    #         # print type(successor_visited_corners), "second"
-    #
-    #         # print successor_visited_corners
-    #         dx, dy = Actions.directionToVector(action)
-    #         nextx, nexty = int(x + dx), int(y + dy)
-    #
-    #         if not self.walls[nextx][nexty]:
-    #             next_position = (nextx, nexty)
-    #             cost = self.costFn(next_position)
-    #
-    #             if next_position in self.corners:
-    #                 if next_position not in hard_typed_list:
-    #                     hard_typed_list.append(next_position)
-    #                     untyped_list.append(next_position)
-    #
-    #             next_state = (next_position, hard_typed_list)
-    #             successors.append((next_state, action, cost))
-    #         # else:
-    #             # next_position= (0,0)
-    #
-    #         print "\n", "current position", state[0]
-    #         # print "next position", next_position
-    #         print type(hard_typed_list) ,"typed"
-    #         print hard_typed_list
-    #         print type(untyped_list), "not typecast"
-    #         print untyped_list
-    #
-    #     self._expanded += 1  # DO NOT CHANGE
-    #
-    #     return successors
-
-
     def getSuccessors(self, state):
         """
         Returns successor states, the actions they require, and a cost of 1.
@@ -395,7 +335,6 @@ class CornersProblem(search.SearchProblem):
 
         for action in [Directions.NORTH, Directions.SOUTH, Directions.EAST, Directions.WEST]:
             x, y = state[0]
-            # print state[1]
 
             successor_visited_corners = list(state[1])
 
@@ -409,9 +348,12 @@ class CornersProblem(search.SearchProblem):
                 if next_position in self.corners:
                     if next_position not in successor_visited_corners:
                         successor_visited_corners.append(next_position)
+                        next_state = (next_position, successor_visited_corners)
+                        successors.append((next_state, action, cost))
+                else:
+                    next_state = (next_position, successor_visited_corners)
+                    successors.append((next_state, action, cost))
 
-                next_state = (next_position, successor_visited_corners)
-                successors.append((next_state, action, cost))
         self._expanded += 1  # DO NOT CHANGE
 
         return successors
@@ -449,24 +391,7 @@ def cornersHeuristic(state, problem):
 
     "*** YOUR CODE HERE ***"
 
-    current_euclidean_distance = 99999999
-# manhattan
-    #     for corner in corners:
-    #         testing_distance = ((corner[0]-state[0][0])**2 + (corner[1]-state[0][1]) ** 2)
-    #         current_euclidean_distance = min(current_euclidean_distance, testing_distance)
-
-    # testing_distance = 0
-    # current_visited_corner_distance = 0
-    # for visited_corners in state[1]:
-    #     testing_distance = ((visited_corners[0] - state[0][0]) ** 2 + (visited_corners[1] - state[0][1]) ** 2)
-    #     current_visited_corner_distance = max(testing_distance, testing_distance)
-
-    # maze distance
-    maze_distance_value = [0]
-    for corner in corners:
-        maze_distance_value.append(mazeDistance(corner, state[0], problem))
-
-    return max(maze_distance_value)
+    return 0
 
 
 class AStarCornersAgent(SearchAgent):
