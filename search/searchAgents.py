@@ -397,12 +397,8 @@ class CornersProblem(search.SearchProblem):
             x, y = state[0]
             # print state[1]
 
-            # this is the most convoluted fix.
             successor_visited_corners = list(state[1])
-            # successor_visited_corners = state[1]
-            # print type(successor_visited_corners)
 
-            # print successor_visited_corners
             dx, dy = Actions.directionToVector(action)
             nextx, nexty = int(x + dx), int(y + dy)
 
@@ -416,10 +412,6 @@ class CornersProblem(search.SearchProblem):
 
                 next_state = (next_position, successor_visited_corners)
                 successors.append((next_state, action, cost))
-                # print next_state
-
-            # print type(successor_visited_corners) ,"after"
-
         self._expanded += 1  # DO NOT CHANGE
 
         return successors
@@ -434,7 +426,8 @@ class CornersProblem(search.SearchProblem):
         for action in actions:
             dx, dy = Actions.directionToVector(action)
             x, y = int(x + dx), int(y + dy)
-            if self.walls[x][y]: return 999999
+            if self.walls[x][y]:
+                return 999999
         return len(actions)
 
 
@@ -455,12 +448,12 @@ def cornersHeuristic(state, problem):
     walls = problem.walls  # These are the walls of the maze, as a Grid (game.py)
 
     "*** YOUR CODE HERE ***"
-    
+
     current_euclidean_distance = 99999999
 # manhattan
-    for corner in corners:
-        testing_distance = ((corner[0]-state[0][0])**2 + (corner[1]-state[0][1]) ** 2)
-        current_euclidean_distance = min(current_euclidean_distance, testing_distance)
+    #     for corner in corners:
+    #         testing_distance = ((corner[0]-state[0][0])**2 + (corner[1]-state[0][1]) ** 2)
+    #         current_euclidean_distance = min(current_euclidean_distance, testing_distance)
 
     # testing_distance = 0
     # current_visited_corner_distance = 0
@@ -468,8 +461,12 @@ def cornersHeuristic(state, problem):
     #     testing_distance = ((visited_corners[0] - state[0][0]) ** 2 + (visited_corners[1] - state[0][1]) ** 2)
     #     current_visited_corner_distance = max(testing_distance, testing_distance)
 
-    total_distance = current_euclidean_distance
-    return total_distance
+    # maze distance
+    maze_distance_value = [0]
+    for corner in corners:
+        maze_distance_value.append(mazeDistance(corner, state[0], problem))
+
+    return max(maze_distance_value)
 
 
 class AStarCornersAgent(SearchAgent):
