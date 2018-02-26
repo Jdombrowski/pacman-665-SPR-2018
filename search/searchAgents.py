@@ -422,6 +422,9 @@ def cornersHeuristic(state, problem):
 
             goals_to_visit.remove(goal)
 
+     if len(state[1]) == 4:
+        return 0
+
     return total_distance
 
 
