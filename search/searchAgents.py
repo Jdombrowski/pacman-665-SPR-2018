@@ -399,22 +399,6 @@ def cornersHeuristic(state, problem):
         if corner not in visited_goals:
             unvisited_corners.append(corner)
 
-
-
-    # while len(goals_to_visit) != 0:
-    #     #  calculate the
-    #     for goal in goals_to_visit:
-    #         # find the shortest path to the next goals
-    #         temp_distance = util.manhattanDistance(goal, current_location)
-    #         # only execute below code after shortest node found, not every time
-    #         if closest_corner_distance > temp_distance:
-    #             closest_corner_distance = temp_distance
-    #             total_distance += temp_distance
-    #             # total_distance = temp_distance
-    #
-    #             current_location = goal
-    #         goals_to_visit.remove(goal)
-
     while len(unvisited_corners) != 0:
         #  calculate the
         closest_corner = find_closest_corner(current_location, unvisited_corners)
@@ -535,31 +519,41 @@ def foodHeuristic(state, problem):
     """
     position, foodGrid = state
     "*** YOUR CODE HERE ***"
+    #  create the list of goals
+    total_distance = 0
 
-#     while len(unvisited_corners) != 0:
-#         #  calculate the
-#         closest_corner = find_closest_corner(current_location, unvisited_corners)
-#         total_distance += util.manhattanDistance(current_location, closest_corner)
-#         if closest_corner in unvisited_corners:
-#             unvisited_corners.remove(closest_corner)
-#             current_location = closest_corner
-#
-#     return total_distance
-#
-#
-# def find_closest_corner(current_location, unvisited_corners):
-#     closest_goal = 99999
-#     closest_goal_location = None
-#
-#     for corner in unvisited_corners:
-#         current_distance = util.manhattanDistance(current_location, corner)
-#         if closest_goal > current_distance:
-#             closest_goal = current_distance
-#             closest_goal_location = corner
-#
-#     return closest_goal_location
+    if len(problem.heuristicInfo) != None:
+        food_goals = foodGrid.asList()
+        problem.heuristicInfo['food_goals'] = food_goals
+    else:
+        food_goals = foodGrid.asList()
+#  ------------------------------------------------------
 
-    return 0
+    for food in food_goals:
+        closest_food = find_closest_corner(position, food_goals)
+        if (closest_food != None):
+            total_distance += util.manhattanDistance(closest_food, position)
+            food_goals.remove(closest_food)
+            position = closest_food
+
+
+    return total_distance
+
+#  ------------------------------------------------------
+
+
+def findClosestFood(current_location, food_goals):
+    closest_goal = 99999
+    closest_goal_location = None
+
+    for food in food_goals:
+        current_distance = util.manhattanDistance(current_location, food)
+        if closest_goal > current_distance:
+            closest_goal = current_distance
+            closest_goal_location = food
+
+    return closest_goal_location
+
 
 class ClosestDotSearchAgent(SearchAgent):
     "Search for all food using a sequence of searches"
