@@ -334,7 +334,7 @@ class Actions:
         x, y = config.pos
         x_int, y_int = int(x + 0.5), int(y + 0.5)
 
-        # In between grid points, all agents must continue straight
+        # In between grid points, all agents must continue straightF
         if (abs(x - x_int) + abs(y - y_int)  > Actions.TOLERANCE):
             return [config.getDirection()]
 

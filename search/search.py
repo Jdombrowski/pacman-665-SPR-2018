@@ -79,6 +79,7 @@ class Node:
         self.action = action
         if parent:
             self.path_cost = parent.path_cost + path_cost
+            # + nullHeuristic(state, problem=None)
             self.depth = parent.depth + 1
         else:
             self.path_cost = path_cost
@@ -90,9 +91,9 @@ class Node:
 
 
     def nodePath(self):
-        x, result = self, [self]
-        while x.parent:
-            result.append(x.parent)
+        x, result = self, [self.action]
+        while x.parent.action:
+            result.append(x.parent.action)
             x = x.parent
         result.reverse()
         # print "This is the final path :", result
@@ -112,7 +113,6 @@ def graphSearch(problem, fringe):
     Search through the successors of a problem to find a goal. The argument fringe should be an empty queue.
     """
     start_state = problem.getStartState()
-    problem.expanded_states = []
     fringe.push(Node(start_state))
     try:
         start_state.__hash__()
@@ -121,18 +121,26 @@ def graphSearch(problem, fringe):
         visited = list()
 
     while not fringe.isEmpty():
-        current_node = fringe.pop()
+        node = fringe.pop()
 
-        if current_node.state not in visited:
-            visited.add(current_node.state)
+        if problem.isGoalState(node.state):
+            return node.nodePath()
+        try:
+            inVisited = node.state in visited
+        except:
+            visited = list(visited)
+            inVisited = node.state in visited
 
-            if problem.isGoalState(current_node.state):
-                return [node.action for node in current_node.nodePath()][1:]
+        if not inVisited:
+            if isinstance(visited, list):
+                visited.append(node.state)
             else:
-                # debug this is where the second expansion of A happens
-                for node in current_node.expand(problem):
-                    if node.state not in visited:
-                        fringe.push(node)
+                visited.add(node.state)
+            nextNodes = node.expand(problem)
+
+            for nextNode in nextNodes:
+                fringe.push(nextNode)
+
     return None
 
 
@@ -147,9 +155,6 @@ def depthFirstSearch(problem):
     To get started, you might want to try some of these simple commands to
     understand the search problem that is being passed in:
     """
-    # print "Start:", problem.getStartState()
-    # print "Is the start a goal?", problem.isGoalState(problem.getStartState())
-    # print "Start's successors:", problem.getSuccessors(problem.getStartState())
 
     return graphSearch(problem, util.Stack())
 
@@ -172,17 +177,9 @@ def nullHeuristic(state, problem=None):
     return 0
 
 
-# pass chars as ints
-
-# debug testing the lambda function of the a*
-def costFn(x, goal):
-    distance = util.manhattanDistance(x.state, goal)
-    return distance
-
 def aStarSearch(problem, heuristic=nullHeuristic):
     """Search the node that has the lowest combined cost and heuristic first."""
-    "*** YOUR CODE HERE ***"
-    return graphSearch(problem, util.PriorityQueueWithFunction(lambda x: costFn(x, problem.goal)))
+    return graphSearch(problem, util.PriorityQueueWithFunction(lambda x: x.path_cost + heuristic(x.state, problem)))
 
 
 # Abbreviations
